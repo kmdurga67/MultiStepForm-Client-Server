@@ -6,5 +6,9 @@ Installation:
 
 npm install --force  #because material-ui/core not supporting dependencies
 
-To Start Server:
+To Start multistepform:
 npm start
+
+
+To start multi-step-form-backend:
+node server.js
