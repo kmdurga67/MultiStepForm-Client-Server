@@ -5,6 +5,8 @@ import { Button, MenuItem, TextField, FormControl, FormHelperText } from "@mater
 import useStyles from "./styles";
 import Select from "@material-ui/core/Select/Select";
 import InputLabel from "@material-ui/core/InputLabel/InputLabel";
+import country from './country.json';
+import state from './state.json';
 
 const Address = ({ formData, setFormData, nextStep, prevStep }) => {
   const classes = useStyles();
@@ -12,7 +14,13 @@ const Address = ({ formData, setFormData, nextStep, prevStep }) => {
   const validationSchema = Yup.object().shape({
     address: Yup.string().required("Address is required"),
     city: Yup.string().required("City is required"),
-    postalCode: Yup.string().required("Zip Code is required"),
+    postalCode:  Yup.number()
+    .typeError("Invalid Zip Code")
+    .integer("Invalid Zip Code")
+    .positive("Invalid Zip Code")
+    .min(100000, "Only  6-digits required")
+    .max(999999, "Only 6-digits required")
+    .required("Phone Number is required"),
     country: Yup.string().required("Country is required"),
     state: Yup.string().required("State is required"),
   });
@@ -49,17 +57,11 @@ const Address = ({ formData, setFormData, nextStep, prevStep }) => {
                 // error={touched.country && !!errors.country}
                 // helperText={touched.country && errors.country}
               >
-                <MenuItem value="India">India</MenuItem>
-                <MenuItem value="USA">USA</MenuItem>
-                <MenuItem value="Afganistan">Afganistan</MenuItem>
-                <MenuItem value="UK">UK</MenuItem>
-                <MenuItem value="Brazil">Brazil</MenuItem>
-                <MenuItem value="China">China</MenuItem>
-                <MenuItem value="Pakistan">Pakistan</MenuItem>
-                <MenuItem value="Germany">Germany</MenuItem>
-                <MenuItem value="France">France</MenuItem>
-                <MenuItem value="Bangladesh">Bangladesh</MenuItem>
-                <MenuItem value="England">England</MenuItem>
+                {country.map((option) => (
+                  <MenuItem key={option.code} value={option.name}>
+                    {option.name}
+                  </MenuItem>
+                ))}
               </Field>
               <FormHelperText>
                 {touched.country && errors.country}
@@ -76,22 +78,11 @@ const Address = ({ formData, setFormData, nextStep, prevStep }) => {
                 // error={touched.state && !!errors.state}
                 // helperText={touched.state && errors.state}
               >
-                <MenuItem value="Delhi">Delhi</MenuItem>
-                <MenuItem value="UttarPradesh">Uttar Pradesh</MenuItem>
-                <MenuItem value="Uttrakhand">Uttrakhand</MenuItem>
-                <MenuItem value="Bangloare">Bangloare</MenuItem>
-                <MenuItem value="Jammu&Kashmir">Jammu & Kashmir</MenuItem>
-                <MenuItem value="Assam">Assam</MenuItem>
-                <MenuItem value="Manipur">Manipur</MenuItem>
-                <MenuItem value="Mizorum">Mizorum</MenuItem>
-                <MenuItem value="Imphal">Imphal</MenuItem>
-                <MenuItem value="Goa">Goa</MenuItem>
-                <MenuItem value="Telengana">Telengana</MenuItem>
-                <MenuItem value="Kerla">Kerla</MenuItem>
-                <MenuItem value="Rajasthan">Rajasthan</MenuItem>
-                <MenuItem value="Haryana">Haryana</MenuItem>
-                <MenuItem value="HimachalPradesh">Himachal Pradesh</MenuItem>
-                <MenuItem value="Punjab">Punjab</MenuItem>
+                {state.map((option) => (
+                  <MenuItem key={option.sno} value={option.name}>
+                    {option.name}
+                  </MenuItem>
+                ))}
               </Field>
               <FormHelperText>
                 {touched.state && errors.state}

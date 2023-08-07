@@ -38,26 +38,28 @@ const Form = () => {
     alternatemobile: "",
     country: "",
     state: "",
+    profile:""
   });
 
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  //adding stepper to the form to track steps
+  //adding stepper to the form to track steps from step 1 to 5
   const nextStep = () => setStep((prevStep) => prevStep + 1);
-  const prevStep = () => setStep((prevStep) => prevStep - 1);
+  const prevStep = () => setStep((prevStep) => prevStep - 1);  //to take backstep from 5 to 1 stepper
 
   const submitForm = async () => {
-    // If the user is in the last step, perform the final form submission
+    // This line of codes will check If the user is in the last step, perform the final form submission
     if (step === steps.length - 1) {
       try {
-        await axios.post("http://localhost:5000/api/formdata", formData);
+        const profile = URL.createObjectURL(formData.profilePicture)
+        await axios.post("http://localhost:5000/api/formdata", {...formData, profile});
 
-        console.log("Final Form Data:", formData);
+        console.log("Final Form Data:", formData, profile);
         toast.success("Form submitted successfully!");
 
         setTimeout(() => {
           setIsSubmitted(true);
-        }, 8000); //after 8 sec message will be displaying
+        }, 8000); //after 8 sec message will be displaying with new page where it shows submitted successfully
       } catch (error) {
         toast.error("Failed to submit form.");
       }
@@ -79,6 +81,7 @@ const Form = () => {
     return <FormSubmitted />;
   }
 
+  //with the help of switch case stepper is able to move from step 1 to 5 without any hinderance also this is the parent component for all the page because props are passing from parent to child
   const renderStep = () => {
     switch (step) {
       case 0:

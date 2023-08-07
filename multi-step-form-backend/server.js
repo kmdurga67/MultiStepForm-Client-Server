@@ -2,8 +2,6 @@ const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const cors = require("cors");
-const multer = require("multer");
-const path = require("path");
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -15,7 +13,10 @@ app.use(express.urlencoded({ extended: true }));
 
 // Connected to MongoDB
 mongoose
-  .connect("mongodb://localhost:27017/my-database")
+  .connect("mongodb://localhost:27017/my-database", {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
   .then(() => {
     console.log("connected");
   })
@@ -40,60 +41,40 @@ const formDataSchema = new mongoose.Schema({
   city: { type: String, required: true },
   postalCode: { type: String, required: true },
   agree: { type: Boolean, required: true },
-  // profilePicture: { type: String, required: true },
+  // profilePicture: { type: String},
   hobbies: [String],
   gender: { type: String, required: true },
   graduation: { type: String, required: true },
   alternatemobile: { type: String },
   country: { type: String, required: true },
   state: { type: String, required: true },
+  profile: {type:String, required:true}  //storing blob url in profile variable
 });
 
 // Create a model for the form data
 const FormDataModel = mongoose.model("FormData", formDataSchema);
 
-// Set up multer storage to store uploaded profile pictures
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "uploads"); // The profile pictures will be stored in the "uploads" folder
-  },
-  filename: (req, file, cb) => {
-    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
-    const ext = path.extname(file.originalname);
-    cb(null, file.fieldname + "-" + uniqueSuffix + ext);
-  },
-});
 
-// Create the multer middleware to handle the profile picture file upload
-const upload = multer({ storage: storage }).single("profilePicture");
 
 // Parse incoming JSON data
 app.use(bodyParser.json());
 
 // Endpoint to save form data to the database, including profilePicture
 app.post("/api/formdata", (req, res) => {
-  upload(req, res, async (err) => {
-    if (err) {
-      console.error("Error uploading profile picture:", err);
-      return res
-        .status(500)
-        .json({ error: "Failed to upload profile picture." });
-    }
-
+  
     // Create a new FormDataModel instance and populate it with the form data
     const formData = new FormDataModel({
       ...req.body,
-      profilePicture: req.file ? req.file.filename : null,
+     // profilePicture: req.file ? req.file : null,
     });
 
     try {
-      await formData.save();
+       formData.save();
       res.status(201).json({ message: "Form data saved successfully!",form: formData });
     } catch (error) {
       console.error("Error saving form data:", error);
       res.status(500).json({ error: "Failed to save form data." });
     }
-  });
 });
 
 // Start the server

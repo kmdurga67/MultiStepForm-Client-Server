@@ -15,6 +15,7 @@ import {
   Checkbox,
 } from "@material-ui/core";
 import useStyles from "./styles";
+import graduation from './graduation.json';
 
 const ContactDetails = ({ formData, setFormData, nextStep, prevStep }) => {
   const classes = useStyles();
@@ -215,13 +216,12 @@ const ContactDetails = ({ formData, setFormData, nextStep, prevStep }) => {
                 label="Highest Degree *"
                 error={touched.graduation && !!errors.graduation}
               >
-                <MenuItem value="B.Tech">B.Tech</MenuItem>
-                <MenuItem value="B.Com">B.Com</MenuItem>
-                <MenuItem value="M.Tech">M.Tech</MenuItem>
-                <MenuItem value="M.Com">M.Com</MenuItem>
-                <MenuItem value="BCA">BCA</MenuItem>
-                <MenuItem value="MCA">MCA</MenuItem>
-                <MenuItem value="PhD">PhD</MenuItem>
+                {/* Iterating the graduation array and creating MenuItem for each options to display to UI */}
+                {graduation.map((option) => (
+                  <MenuItem key={option.value} value={option.label}>
+                    {option.label}
+                  </MenuItem>
+                ))}
               </Field>
               {touched.graduation && errors.graduation && (
                 <div className={classes.error}>{errors.graduation}</div>
