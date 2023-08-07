@@ -8,7 +8,9 @@ import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 // import './App.css';
-import useStyles from './components/styles';
+import "./errorboundaries/styles.css";
+import useStyles from "./components/styles";
+import ErrorBoundary from "./errorboundaries/ErrorBoundary";
 
 function App() {
   const classes = useStyles();
@@ -18,15 +20,24 @@ function App() {
         <Toolbar>
           <Typography>
             <a href="../components/PersonalInformation.js">
-            <img src="https://images.ctfassets.net/lzny33ho1g45/4ODoWVyzgicvbcb6J9ZZZ5/c0333ef44af8588fee18c1e6ed403fc7/Group_12549.jpg" height={'80px'} width={'130px'} alt="no images found"/>
+              <img
+                src="https://images.ctfassets.net/lzny33ho1g45/4ODoWVyzgicvbcb6J9ZZZ5/c0333ef44af8588fee18c1e6ed403fc7/Group_12549.jpg"
+                height={"80px"}
+                width={"130px"}
+                alt="no images found"
+              />
             </a>
           </Typography>
-          <Typography variant="h2" className={classes.header}>Multi Step Form</Typography>
+          <Typography variant="h2" className={classes.header}>
+            Multi Step Form
+          </Typography>
         </Toolbar>
       </AppBar>
       <CssBaseline />
       <Container maxWidth="lg">
-        <Form />
+        <ErrorBoundary className="error-boundary">
+          <Form />
+        </ErrorBoundary>
       </Container>
       <ToastContainer />
     </div>
