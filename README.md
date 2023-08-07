@@ -1,4 +1,10 @@
 # MultiStepForm-Client-Server
 
-to start multistepform application: npm i --force 
-to start backend multi-step-form-backend: node server.js
+Clone down this repository. You will need node and npm installed globally on your machine.
+
+Installation:
+
+npm install --force  #because material-ui/core not supporting dependencies
+
+To Start Server:
+npm start
