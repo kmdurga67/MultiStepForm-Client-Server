@@ -19,8 +19,15 @@ const steps = [
 ];
 
 const Form = () => {
+
+  //adding .env file to call API
+  const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
+
+  //dynamic styles is added
   const classes = useStyles();
   const [step, setStep] = useState(0);
+
+  //form data variables
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -51,10 +58,10 @@ const Form = () => {
     // This line of codes will check If the user is in the last step, perform the final form submission
     if (step === steps.length - 1) {
       try {
-        const profile = URL.createObjectURL(formData.profilePicture)
-        await axios.post("http://localhost:5000/api/formdata", {...formData, profile});
+        const profile = formData.profilePicture? URL.createObjectURL(formData.profilePicture) : null;
+        await axios.post(`${apiBaseUrl}/formdata`, {...formData, profile});
 
-        console.log("Final Form Data:", formData, profile);
+        console.log("Final Form Data:", formData, profile); 
         toast.success("Form submitted successfully!");
 
         setTimeout(() => {
