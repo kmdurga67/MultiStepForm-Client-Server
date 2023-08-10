@@ -5,7 +5,11 @@ Clone down this repository. You will need node and npm installed globally on you
 Follow directory pattern:
 cd MultiStepForm-Client-Server
 
+
+
 For frontend: cd mulltistepform
+
+
 For backend: cd multi-step-form-backend
 
 For Installation of dependencies:
